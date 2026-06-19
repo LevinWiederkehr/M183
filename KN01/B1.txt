@@ -1,0 +1,18 @@
+Frage 1: Warum umging der Payload die Sicherheitsprüfung?
+
+Browser blockieren <script>-Tags in bestimmten Kontexten, aber <img> gilt als harmlos. Der onerror-Handler wird automatisch ausgeführt, wenn das Bild nicht lädt – das ist normales Browser-Verhalten. Event-Handler-Attribute wie onerror, onload oder onclick können ebenfalls JavaScript ausführen, werden aber oft nicht gefiltert.
+
+
+Frage 2: Was bedeutet die Ausführung im Browser des Verteidigers?
+
+Der Payload ist in der Datenbank gespeichert und wird bei jedem Seitenaufruf ausgeführt – auch beim Verteidiger, ohne dass er etwas tun muss. Ein echter Angriff könnte so Session-Cookies stehlen, Tastatureingaben abfangen oder auf Phishing-Seiten umleiten. Stored XSS skaliert: ein Payload, alle Nutzer betroffen.
+
+
+Frage 3: OWASP Top 10 Kategorie
+
+A03 – Injection (XSS gilt als Injection, da Nutzerdaten als Code interpretiert werden)
+
+
+Frage 4: Output Encoding
+
+Die Applikation muss Sonderzeichen vor der Ausgabe HTML-enkodieren: < → &lt;, > → &gt; usw. Dann zeigt der Browser den Payload als harmlosen Text an, statt ihn als HTML/JavaScript auszuführen. Ergänzend hilft eine Content Security Policy (CSP), die Inline-Skripte generell unterbindet.ss

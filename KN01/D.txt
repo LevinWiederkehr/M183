@@ -1,0 +1,13 @@
+Frage 1: Warum ist Client-seitiges Speichern von Rollen gefährlich?
+
+Alles im Browser ist für den Nutzer sicht- und veränderbar – Cookies, LocalStorage, SessionStorage. Ein Angreifer kann diese Werte ohne technisches Vorwissen direkt in den DevTools bearbeiten. Wenn die App diesen Werten vertraut, kann sich jeder selbst zum Admin machen.
+
+
+Frage 2: Wo sollten Berechtigungsprüfungen stattfinden?
+
+Ausschliesslich auf dem Server. Der Client kann nie als vertrauenswürdig gelten – der Nutzer kontrolliert ihn vollständig. Der Server muss bei jedem Request selbst prüfen ob der anfragende Benutzer die nötige Berechtigung hat, unabhängig davon was der Client behauptet.
+
+
+Frage 3: OWASP Top 10 Kategorie
+
+A01 – Broken Access Control – beschreibt genau dieses Problem: Berechtigungen werden nicht korrekt durchgesetzt, wodurch Nutzer auf Funktionen oder Daten zugreifen können, die ihnen nicht zustehen.

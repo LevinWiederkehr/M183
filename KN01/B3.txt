@@ -1,0 +1,24 @@
+Frage 1: Warum erhielt der Angreifer den Cookie ohne Passwort oder Browserzugriff?
+
+Der Payload war als Stored XSS in der Datenbank gespeichert. Als der Verteidiger die Seite aufrief, führte sein eigener Browser den Code aus und schickte den Cookie aktiv an den Angreifer-Server. Der Angreifer musste nichts weiter tun – der Browser des Opfers erledigte die Exfiltration selbst.
+
+
+Frage 2: Warum funktioniert new Image().src trotz Same-Origin-Policy?
+
+Die Same-Origin-Policy blockiert das Lesen von Antworten fremder Origins – nicht das Senden von Anfragen. Das Laden eines Bildes ist eine einseitige GET-Anfrage, die Browser grundsätzlich zu jeder Domain erlauben (sonst würden externe Bilder auf Webseiten nicht funktionieren). Der Angreifer-Server muss die Antwort gar nicht auswerten – die Cookie-Daten stehen bereits in der URL.
+
+
+Frage 3: Warum war der Serveo-Tunnel notwendig?
+
+Gruyere läuft unter HTTPS. Browser blockieren Mixed Content: Eine HTTPS-Seite darf keine HTTP-Anfragen ins offene Internet senden. Eine direkte Anfrage an http://<EC2-IP>:9000 wäre vom Browser stillschweigend geblockt worden. Serveo stellt dem lokalen Server eine HTTPS-URL zur Verfügung, wodurch der Browser die Anfrage als sicher akzeptiert.
+
+
+Frage 4: Zwei technische Massnahmen gegen diesen Angriff
+
+HttpOnly-Flag: document.cookie gibt den Cookie nicht zurück – der Payload kann ihn nicht auslesen und nicht exfiltrieren.
+Content Security Policy (CSP): Mit einem strikten connect-src- oder img-src-Header hätte der Browser die ausgehende Anfrage an serveo.net blockiert.
+
+
+Frage 5: Was bewirkt das Secure-Flag?
+
+Ein Cookie mit Secure-Flag wird vom Browser ausschliesslich über HTTPS-Verbindungen gesendet – nie über HTTP. Es schützt vor Man-in-the-Middle-Angriffen in unverschlüsselten Netzwerken (z.B. offenes WLAN), wo ein Angreifer den Netzwerkverkehr mitlesen könnte. Gegen XSS-basierte Exfiltration wie in B3 hilft es hingegen nicht – da der Cookie per JavaScript ausgelesen und über HTTPS verschickt wurde.

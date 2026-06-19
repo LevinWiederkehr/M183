@@ -1,0 +1,20 @@
+Frage 1: Stored vs. Reflected XSS
+
+Stored XSS wird in der Datenbank gespeichert und trifft jeden der die Seite besucht – automatisch, ohne weiteres Zutun. Reflected XSS existiert nur in der URL und trifft nur Personen, die genau diesen Link öffnen. Stored XSS hat also deutlich grössere Reichweite, Reflected XSS ist flüchtig und zielt auf einzelne Opfer.
+
+
+Frage 2: Social Engineering bei Reflected XSS
+
+Der Angreifer verschickt den manipulierten Link so, dass er legitim wirkt:
+
+Phishing-Mail mit Text wie „Ihr Konto wurde gesperrt, bitte hier einloggen" – der Link sieht auf den ersten Blick nach der echten Seite aus
+URL-Shortener (z.B. bit.ly) um den langen, verdächtigen Payload zu verstecken
+Typosquatting oder der Link wird in einem Chat/Forum gepostet mit glaubwürdigem Kontext
+
+Das Opfer muss nur klicken – der Payload läuft sofort beim Laden der Seite.
+
+
+Frage 3: OWASP Proactive Control gegen XSS
+
+C4 – Encode and Escape Data
+Dieser Control schützt am direktesten: Alle Ausgaben müssen kontextgerecht enkodiert werden (HTML, JavaScript, URL, CSS), bevor sie im Browser landen. Damit wird verhindert, dass Nutzereingaben als Code interpretiert werden – egal ob Stored oder Reflected XSS.

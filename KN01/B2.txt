@@ -1,0 +1,13 @@
+Frage 1: Was kann ein Angreifer mit dem Session-Cookie tun?
+
+Er kann die Session des Opfers vollständig übernehmen – ohne Passwort. Dazu kopiert er den Cookie-Wert in seinen eigenen Browser (z.B. via DevTools). Der Server sieht nur die gültige Session-ID und hält ihn für den eingeloggten Nutzer. Alles, was das Opfer darf, darf nun auch der Angreifer.
+
+
+Frage 2: Was bewirkt das HttpOnly-Flag?
+
+Ein mit HttpOnly markierter Cookie ist für JavaScript nicht lesbar – document.cookie gibt ihn nicht zurück. Genau dieser Payload hätte also nichts angezeigt, da der Cookie gar nicht erst zugänglich wäre. Der Browser sendet ihn weiterhin bei HTTP-Requests an den Server, aber clientseitiger Code kommt nicht ran.
+
+
+Frage 3: Warum ist localStorage gefährlicher als HttpOnly-Cookie?
+
+localStorage ist immer per JavaScript lesbar – es gibt kein Äquivalent zum HttpOnly-Flag. Jeder XSS-Payload kann direkt mit localStorage.getItem(...) den Token auslesen und exfiltrieren. Ein HttpOnly-Cookie hingegen bleibt selbst bei erfolgreichem XSS unsichtbar für den Angreifer.
